@@ -1,9 +1,10 @@
-import Base64 from 'crypto-js/enc-base64';
-import Utf8 from 'crypto-js/enc-utf8';
+import Base64 from "crypto-js/enc-base64";
+import Utf8 from "crypto-js/enc-utf8";
+import Hex from "crypto-js/enc-hex";
 
-import { AlgorithmNotSupported } from './errors';
-import algorithmMapping from './algorithms';
-import { urlEncodeBase64 } from './helpers';
+import { AlgorithmNotSupported } from "./errors";
+import algorithmMapping from "./algorithms";
+import { urlEncodeBase64 } from "./helpers";
 
 import {
   JWTToken,
@@ -11,8 +12,8 @@ import {
   JWTHeader,
   HeaderOptions,
   EncodingKey,
-} from '../types/jwt';
-import { SupportedAlgorithms } from '../types/algorithms';
+} from "../types/jwt";
+import { SupportedAlgorithms } from "../types/algorithms";
 
 let _key: EncodingKey;
 
@@ -37,11 +38,11 @@ class Encoder {
         headerOptions.algorithm ||
         headerOptions.alg ||
         SupportedAlgorithms.HS256,
-      typ: 'JWT',
+      typ: "JWT",
       ...stripAlgorithmOptions(headerOptions),
     };
 
-    _key = key;
+    _key = key != null ? Utf8.stringify(Hex.parse(key)) : null;
   }
 
   buildHeader(): JWTHeader {
@@ -60,7 +61,7 @@ class Encoder {
     const encodedHeader = urlEncodeBase64(base64Header);
     const encodedBody = urlEncodeBase64(base64Body);
 
-    if (!this.header.alg || this.header.alg === 'none') {
+    if (!this.header.alg || this.header.alg === "none") {
       return `${encodedHeader}.${encodedBody}.`;
     }
 
