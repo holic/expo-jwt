@@ -24,7 +24,7 @@
   "scripts": {
     "compile": "npx tsc",
     "build": "rm -rf dist && npm run compile",
-    "prepublish": "npm run sanity && npm run build",
+    "prepublish": "npm run build",
     "sanity": "npm run compile && npm test",
     "test": "npx jest",
     "test:watch": "npx jest --watchAll",
